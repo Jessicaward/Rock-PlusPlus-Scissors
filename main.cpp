@@ -3,8 +3,10 @@
 
 using namespace std;
 
-enum Choice { rock, paper, scissors };
 enum Outcome { user, bot, draw };
+string outcomeMap[3] = {"You win!", "Bot wins!", "It was a draw!"};
+enum Choice { rock, paper, scissors };
+string choiceMap[3] = {"rock", "paper", "scissors"};
 
 Choice getUserChoice() {
     cout << "Rock, paper or scissors? " << endl;
@@ -57,7 +59,7 @@ Outcome decideOutcomeOfGame(Choice userChoice, Choice botChoice) {
 }
 
 bool shouldGameExit() {
-    cout << "\r\n Quit?";
+    cout << "Quit?" << "\r\n";
     string input;
     getline(cin, input);
     if(input == "no" || input == "NO" || input == "n" || input == "N" || input == "0") {
@@ -73,7 +75,9 @@ void gameLoop() {
         auto userChoice = getUserChoice();
         auto botChoice = getBotChoice();
 
-        cout << decideOutcomeOfGame(userChoice, botChoice);
+        cout << "You chose " << choiceMap[userChoice] << "\r\n";
+        cout << "The bot chose " << choiceMap[botChoice] << "\r\n";
+        cout << outcomeMap[decideOutcomeOfGame(userChoice, botChoice)] << "\r\n";
 
         quit = shouldGameExit();
     }
