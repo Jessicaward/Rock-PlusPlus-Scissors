@@ -1,27 +1,27 @@
 #include <iostream>
-#include <stdlib.h>
-
-using namespace std;
+#include <cstdlib>
 
 enum Outcome { user, bot, draw };
-string outcomeMap[3] = {"You win!", "Bot wins!", "It was a draw!"};
+std::string outcomeMap[3] = {"You win!", "Bot wins!", "It was a draw!"};
 enum Choice { rock, paper, scissors };
-string choiceMap[3] = {"rock", "paper", "scissors"};
+std::string choiceMap[3] = {"rock", "paper", "scissors"};
 
 Choice getUserChoice() {
-    cout << "Rock, paper or scissors? " << endl;
+    std::cout << "Rock, paper or scissors? \r\n";
 
-    string input;
-    getline(cin, input);
-
-    if(input == "rock" || input == "ROCK" || input == "1" || input == "r" || input == "R") {
-        return rock;
-    } else if(input == "paper" || input == "PAPER" || input == "2" || input == "p" || input == "P") {
-        return paper;
-    } else if(input == "scissors" || input == "SCISSORS" || input == "3" || input == "s" || input == "S") {
-        return scissors;
-    } else {
-        throw invalid_argument("You must choose rock, paper or scissors.");
+    std::string input;
+    getline(std::cin, input);
+    //Check the return value was successful
+    if(std::cin) {
+        if(input == "rock" || input == "ROCK" || input == "1" || input == "r" || input == "R") {
+            return rock;
+        } else if(input == "paper" || input == "PAPER" || input == "2" || input == "p" || input == "P") {
+            return paper;
+        } else if(input == "scissors" || input == "SCISSORS" || input == "3" || input == "s" || input == "S") {
+            return scissors;
+        } else {
+            throw std::invalid_argument("You must choose rock, paper or scissors.");
+        }
     }
 }
 
@@ -36,7 +36,7 @@ Choice getBotChoice() {
         case 3:
             return scissors;
         default:
-            throw invalid_argument("Random number was generated outside of the given range.");
+            return scissors;
     }
 }
 
@@ -59,31 +59,29 @@ Outcome decideOutcomeOfGame(Choice userChoice, Choice botChoice) {
 }
 
 bool shouldGameExit() {
-    cout << "Quit?" << "\r\n";
-    string input;
-    getline(cin, input);
-    if(input == "no" || input == "NO" || input == "n" || input == "N" || input == "0") {
-        return false;
-    } else {
-        return true;
+    std::cout << "Quit?" << "\r\n";
+    std::string input;
+    getline(std::cin, input);
+
+    //Check the return value was successful
+    if(std::cin) {
+        return input != "no" && input != "NO" && input != "n" && input != "N" && input != "0";
     }
+
+    return true;
 }
 
 void gameLoop() {
-    auto quit = false;
-    while(!quit) {
+    for(auto quit = false; !quit; quit = shouldGameExit()) {
         auto userChoice = getUserChoice();
         auto botChoice = getBotChoice();
 
-        cout << "You chose " << choiceMap[userChoice] << "\r\n";
-        cout << "The bot chose " << choiceMap[botChoice] << "\r\n";
-        cout << outcomeMap[decideOutcomeOfGame(userChoice, botChoice)] << "\r\n";
-
-        quit = shouldGameExit();
+        std::cout << "You chose " << choiceMap[userChoice] << "\r\n";
+        std::cout << "The bot chose " << choiceMap[botChoice] << "\r\n";
+        std::cout << outcomeMap[decideOutcomeOfGame(userChoice, botChoice)] << "\r\n";
     }
 }
 
 int main() {
     gameLoop();
-    return 0;
 }
